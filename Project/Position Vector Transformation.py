@@ -10,12 +10,14 @@ def LShapedPlot(coords, axisScale, dataset, file, counter, figureSize, saveFrame
     #plt.figure(figsize = (14,14.39))
     plt.figure(figsize = figureSize)
 
+
+
     gs = gridspec.GridSpec(2,2)
     gs.update(wspace=0, hspace=0)
 
     ax1 = plt.subplot(gs[0])
     ax1.xaxis.set_visible(False)
-    ax1.set_ylabel('y (Mpc)', rotation=0, labelpad=15)
+    ax1.set_ylabel('y (Mpc)', rotation=90, labelpad=0)
     ax1.set_aspect('equal')
     ax1.spines['right'].set_visible(False)
     ax1.spines['bottom'].set_visible(False)
@@ -34,7 +36,7 @@ def LShapedPlot(coords, axisScale, dataset, file, counter, figureSize, saveFrame
     ax2.plot(coords[0:,2], coords[0:,1], '.', color='orange', markersize=1)
 
     ax3 = plt.subplot(gs[2])
-    ax3.set_ylabel('z (Mpc)', rotation=0, labelpad=15)
+    ax3.set_ylabel('z (Mpc)', rotation=90, labelpad=0)
     ax3.set_xlabel('x (Mpc)')
     ax3.set_aspect('equal')
     ax3.spines['top'].set_visible(False)
@@ -45,10 +47,12 @@ def LShapedPlot(coords, axisScale, dataset, file, counter, figureSize, saveFrame
     ax4 = plt.subplot(gs[3], visible=False)
     ax4.set_aspect('equal')
 
+    plt.suptitle(dataset + " " + file)
+
     if saveFrames:
         plt.savefig('l-shaped_trnsfrm\\' + dataset + '\\plot' + str(counter) + '.png', dpi=300)
-    
-    plt.show()
+    else:
+        plt.show()
 
 
 def main():
@@ -65,8 +69,6 @@ def main():
         files = listdir('data/' + dataset)
 
         count = 0
-
-        galaxyAm = np.array(range(96), dtype=float).reshape(24,4)
         
         for file in files:
         #if 1==1:
@@ -75,6 +77,7 @@ def main():
 
             #file = 'star_particles_015_z002p012.hdf5'
             #file = 'star_particles_028_z000p000.hdf5'
+            #file = 'star_particles_014_z002p237.hdf5'
             
             # get redshift from the filename
             m = re.search('(z[0-9])\w+', file)
@@ -151,10 +154,6 @@ def main():
             print (dsc_trans[0,1])
             print ("dsc_trans[0,z]")
             print (dsc_trans[0,2])        
-
-            # Store totals of all particles for each redshift in the current galaxy
-            #galaxyAm[count, 0] = redshift
-            #galaxyAm[count, 1] = r[]
             
             LShapedPlot(dsc_trans, axisScale, dataset, file, count, (7,7), True)
 

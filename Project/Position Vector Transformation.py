@@ -6,7 +6,7 @@ import matplotlib.gridspec as gridspec
 import numpy as np
 import re
 
-def LShapedPlot(coords, axisScale, dataset, file, figureSize, saveFrames):
+def LShapedPlot(coords, axisScale, dataset, file, counter, figureSize, saveFrames):
     #plt.figure(figsize = (14,14.39))
     plt.figure(figsize = figureSize)
 
@@ -46,7 +46,7 @@ def LShapedPlot(coords, axisScale, dataset, file, figureSize, saveFrames):
     ax4.set_aspect('equal')
 
     if saveFrames:
-        plt.savefig('l-shaped\\' + dataset + '\\plot' + str(count) + '.png', dpi=300)
+        plt.savefig('l-shaped_trnsfrm\\' + dataset + '\\plot' + str(counter) + '.png', dpi=300)
     
     plt.show()
 
@@ -68,13 +68,13 @@ def main():
 
         galaxyAm = np.array(range(96), dtype=float).reshape(24,4)
         
-        #for file in files:
-        if 1==1:
+        for file in files:
+        #if 1==1:
 
 
 
             #file = 'star_particles_015_z002p012.hdf5'
-            file = 'star_particles_028_z000p000.hdf5'
+            #file = 'star_particles_028_z000p000.hdf5'
             
             # get redshift from the filename
             m = re.search('(z[0-9])\w+', file)
@@ -156,7 +156,7 @@ def main():
             #galaxyAm[count, 0] = redshift
             #galaxyAm[count, 1] = r[]
             
-            LShapedPlot(dsc_trans, axisScale, "dataset", file, (7,7), True)
+            LShapedPlot(dsc_trans, axisScale, dataset, file, count, (7,7), True)
 
             count = count + 1
             print ('-------------------------------------------------')

@@ -50,7 +50,9 @@ def LShapedPlot(coords, axisScale, dataset, file):
 
 
 def main():
-    axisScale = 0.03
+    # axis scale sets the maximum value on the axes
+    axisScale = 0.15
+
     datasets = ['organic', 'gm_late', 'gm_early']
 
     for dataset in datasets:
@@ -64,13 +66,13 @@ def main():
 
         galaxyAm = np.array(range(96), dtype=float).reshape(24,4)
         
-        for file in files:
-        #if 1==1:
+        #for file in files:
+        if 1==1:
 
 
 
             #file = 'star_particles_015_z002p012.hdf5'
-            #file = 'star_particles_028_z000p000.hdf5'
+            file = 'star_particles_028_z000p000.hdf5'
             
             # get redshift from the filename
             m = re.search('(z[0-9])\w+', file)

@@ -6,9 +6,10 @@ import matplotlib.gridspec as gridspec
 import numpy as np
 import re
 
-def LShapedPlot(coords, axisScale, dataset, file):
-    plt.figure(figsize = (14,14.39))
-    
+def LShapedPlot(coords, axisScale, dataset, file, figureSize, saveFrames):
+    #plt.figure(figsize = (14,14.39))
+    plt.figure(figsize = figureSize)
+
     gs = gridspec.GridSpec(2,2)
     gs.update(wspace=0, hspace=0)
 
@@ -44,14 +45,15 @@ def LShapedPlot(coords, axisScale, dataset, file):
     ax4 = plt.subplot(gs[3], visible=False)
     ax4.set_aspect('equal')
 
-
-    #plt.savefig('l-shaped\\' + dataset + '\\plot' + str(count) + '.png', dpi=300)
+    if saveFrames:
+        plt.savefig('l-shaped\\' + dataset + '\\plot' + str(count) + '.png', dpi=300)
+    
     plt.show()
 
 
 def main():
     # axis scale sets the maximum value on the axes
-    axisScale = 0.15
+    axisScale = 0.1
 
     datasets = ['organic', 'gm_late', 'gm_early']
 
@@ -154,7 +156,7 @@ def main():
             #galaxyAm[count, 0] = redshift
             #galaxyAm[count, 1] = r[]
             
-            LShapedPlot(dsc_trans, axisScale, "dataset", file)
+            LShapedPlot(dsc_trans, axisScale, "dataset", file, (7,7), True)
 
             count = count + 1
             print ('-------------------------------------------------')

@@ -6,7 +6,7 @@ import matplotlib.gridspec as gridspec
 import numpy as np
 import re
 
-def LShapedPlot(coords, axisScale, dataset, file, counter, figureSize, saveFrames):
+def LShapedPlot(dsc_x_trsfrm, dsc_y_trsfrm, dsc_z_trsfrm, axisScale, dataset, file, counter, figureSize, saveFrames):
     #plt.figure(figsize = (14,14.39))
     plt.figure(figsize = figureSize)
 
@@ -23,7 +23,8 @@ def LShapedPlot(coords, axisScale, dataset, file, counter, figureSize, saveFrame
     ax1.spines['bottom'].set_visible(False)
     ax1.set_xlim(left=-axisScale, right=axisScale)
     ax1.set_ylim(bottom=-axisScale, top=axisScale)
-    ax1.plot(coords[0:,0], coords[0:,1], '.', color='blue', markersize=1)
+    #ax1.plot(coords[0:,0], coords[0:,1], '.', color='blue', markersize=1)
+    ax1.plot(dsc_x_trsfrm, dsc_y_trsfrm, '.', color='blue', markersize=1)
     ax1.set_title = dataset + ' ' + file
 
     ax2 = plt.subplot(gs[1])
@@ -33,7 +34,8 @@ def LShapedPlot(coords, axisScale, dataset, file, counter, figureSize, saveFrame
     ax2.spines['left'].set_visible(False)
     ax2.set_xlim(left=-axisScale, right=axisScale)
     ax2.set_ylim(bottom=-axisScale, top=axisScale)
-    ax2.plot(coords[0:,2], coords[0:,1], '.', color='orange', markersize=1)
+    #ax2.plot(coords[0:,2], coords[0:,1], '.', color='orange', markersize=1)
+    ax2.plot(dsc_z_trsfrm, dsc_y_trsfrm, '.', color='orange', markersize=1)
 
     ax3 = plt.subplot(gs[2])
     ax3.set_ylabel('z (Mpc)', rotation=90, labelpad=0)
@@ -42,7 +44,8 @@ def LShapedPlot(coords, axisScale, dataset, file, counter, figureSize, saveFrame
     ax3.spines['top'].set_visible(False)
     ax3.set_xlim(left=-axisScale, right=axisScale)
     ax3.set_ylim(bottom=-axisScale, top=axisScale)
-    ax3.plot(coords[0:,0], coords[0:,2], '.', color='red', markersize=1)
+    #ax3.plot(coords[0:,0], coords[0:,2], '.', color='red', markersize=1)
+    ax3.plot(dsc_x_trsfrm, dsc_z_trsfrm, '.', color='red', markersize=1)
 
     ax4 = plt.subplot(gs[3], visible=False)
     ax4.set_aspect('equal')
@@ -57,9 +60,10 @@ def LShapedPlot(coords, axisScale, dataset, file, counter, figureSize, saveFrame
 
 def main():
     # axis scale sets the maximum value on the axes
-    axisScale = 0.1
+    axisScale = 0.03
 
     datasets = ['organic', 'gm_late', 'gm_early']
+    #datasets = ['organic']
 
     for dataset in datasets:
         print('-----------------------------------------')
@@ -74,7 +78,7 @@ def main():
         #if 1==1:
 
 
-
+            #file = 'star_particles_005_z007p050.hdf5'
             #file = 'star_particles_015_z002p012.hdf5'
             #file = 'star_particles_028_z000p000.hdf5'
             #file = 'star_particles_014_z002p237.hdf5'
@@ -113,33 +117,39 @@ def main():
             
             # Calculate the scale factor by working out the angular momentum 
             unitVect_z = angMomTot / magnitude
-            #print ("unitVect_z", unitVect_z)
-            #print ("np.linalg.norm(unitVect_z)", np.linalg.norm(unitVect_z))
+            print ("unitVect_z", unitVect_z)
+            print ("np.linalg.norm(unitVect_z)", np.linalg.norm(unitVect_z))
             
             
             # the angular momentum's vector's (unitVect_z) direction is directly out of the plane of the galaxy
             # unitVect_z = k, but j = [-k2/k1, 1, 0], so
             
             k = unitVect_z
-            #print ("k: ", k)
+            print ("k: ", k)
             
-            j = [k[1]/k[0], 1, 0]
-            #print ("j: ", j)
+            j = [-k[1]/k[0], 1, 0]
+            j = j/np.linalg.norm(j)
+            print ("j: ", j)
             
             i = np.cross(j, unitVect_z)
-            #print ("i: ", i)
+            #i = j[1]*k[2] - j[2]*k[1], j[2]*k[0] - j[0]*k[2], j[0]*k[1] - j[1] * k[0]
+            print ("i: ", i)
+
+            print ("np.dot(i,j)", np.dot(i,j))
+            print ("np.dot(i,k)", np.dot(i,k))
+            print ("np.dot(j,k)", np.dot(j,k))
     
             dsc_x_trsfrm = np.dot(ds_c, i)
-            #print ("dsc_x_trsfrm", dsc_x_trsfrm)
-            #print ("dsc_x_trsfrm shape", np.shape(dsc_x_trsfrm))
+            print ("dsc_x_trsfrm", dsc_x_trsfrm)
+            print ("dsc_x_trsfrm shape", np.shape(dsc_x_trsfrm))
             
             dsc_y_trsfrm = np.dot(ds_c, j)
-            #print ("dsc_y_trsfrm", dsc_y_trsfrm)
-            #print ("dsc_y_trsfrm shape", np.shape(dsc_y_trsfrm))
+            print ("dsc_y_trsfrm", dsc_y_trsfrm)
+            print ("dsc_y_trsfrm shape", np.shape(dsc_y_trsfrm))
             
             dsc_z_trsfrm = np.dot(ds_c, k)
-            #print ("dsc_z_trsfrm", dsc_z_trsfrm)
-            #print ("dsc_z_trsfrm shape", np.shape(dsc_z_trsfrm))
+            print ("dsc_z_trsfrm", dsc_z_trsfrm)
+            print ("dsc_z_trsfrm shape", np.shape(dsc_z_trsfrm))
             
             # Combine the separate x, y and z arrays into a single 3-vector array.  Transpose for ease of visualisation
             #dsc_trans = list(zip(dsc_x_trsfrm, dsc_y_trsfrm, dsc_z_trsfrm))
@@ -148,14 +158,14 @@ def main():
             print ("dsc_trans", dsc_trans)
             print ("dsc_trans shape", np.shape(dsc_trans))
             
-            print ("dsc_trans[0,x]")
-            print (dsc_trans[0,0])
-            print ("dsc_trans[0,y]")
-            print (dsc_trans[0,1])
-            print ("dsc_trans[0,z]")
-            print (dsc_trans[0,2])        
+            #print ("dsc_trans[0,x]")
+            #print (dsc_trans[0,0])
+            #print ("dsc_trans[0,y]")
+            #print (dsc_trans[0,1])
+            #print ("dsc_trans[0,z]")
+            #print (dsc_trans[0,2])        
             
-            LShapedPlot(dsc_trans, axisScale, dataset, file, count, (7,7), True)
+            LShapedPlot(dsc_x_trsfrm, dsc_y_trsfrm, dsc_z_trsfrm, axisScale, dataset, file, count, (7,7), True)
 
             count = count + 1
             print ('-------------------------------------------------')

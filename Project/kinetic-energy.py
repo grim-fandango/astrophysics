@@ -5,21 +5,29 @@ import matplotlib.gridspec as gridspec
 import numpy as np
 import re
 
-def plotLine(datasrc, title, xAxisLabel, yAxisLabel, colour='tab:red'):
+def plotLine(xValues, yValues, title, xAxisLabel, yAxisLabel, colour='tab:red'):
+
+
     #plt.switch_backend('TkAgg')
     plt.figure(figsize = (12,10))
+
 
 
     plt.title(title, pad=30)
     plt.xlabel(xAxisLabel)
     plt.ylabel(yAxisLabel)
-    #plt.ticklabel_format(axis='y', style='sci', useMathText=True)
+    plt.ticklabel_format(axis='y', style='sci', useMathText=True)
     #plt.rcParams["figure.figsize"] = (12,10)
     plt.semilogy()
-    plt.plot(datasrc[0:,0], datasrc[0:,1])
+    plt.plot(xValues, yValues)
     plt.show()    
 
 def main():
+
+    #B = np.arange(24*3).reshape((24,3))
+    #print(B)
+    #print (B[0:1])
+
     # axis scale sets the maximum value on the axes
     axisScale = 0.03
 
@@ -35,7 +43,10 @@ def main():
 
         count = 0
 
-        galaxyKE = np.array(range(48), dtype=float).reshape(24,2)
+        #galaxyKE = np.array(range(48), dtype=float).reshape(24,2)
+        redshifts = np.array(range(24), dtype=float)
+        kes = np.array(range(24), dtype=float)
+        specificKes = np.array(range(24), dtype=float)
         
         for file in files:
         #if 1==1:
@@ -61,23 +72,35 @@ def main():
             ds_m = f['Mass']
 
             # Calculate kinetic energy for all star particles
-            ke0 = (ds_m * np.square(np.transpose(ds_v)))
-            ke1 = np.transpose(ke0)
-            #print (ke1)
-            ke = 0.5 * ke1
-            #print (ke)
-            #print (np.shape(ke))
-            ke_sum = np.sum(ke)
-            print ("\nKE sum:")
-            print (ke_sum)
-            print (np.shape(ke_sum))
-            print ('-------------------------------------------------')
+            #vel_tot = np.sum(ds_v, axis=1)
+            vel = np.array(ds_v)
 
-            galaxyKE[count, 0] = redshift
-            galaxyKE[count, 1] = ke_sum
+            vel_magnitude = np.linalg.norm(ds_v, axis=1)
+            print ('vel_magnitude: ', vel_magnitude)
+
+
+            ke = np.sum(0.5 * np.array(ds_m) * np.square(vel_magnitude))
+            specificKe = np.sum(0.5 * np.square(vel_magnitude))
+
+
+            redshifts[count] = redshift
+            kes[count] = ke
+            specificKes[count] = specificKe
+            #keErg[count] = keJoules[count] * 1e7
+            #kes[count] = np.sum((0.5)*(np.array(ds_m))*((vel_magnitude)**2))
 
             count = count + 1
-        plotLine(galaxyKE, 'Galaxy: ' + dataset + ' - Total Kinetic Energy vs. Redshift', 'redshift', 'KE (J)')
+
+            print('file name:   '+ file   +  '\t redshift:   ' + str(redshift) + '\t mass:   ' + str(ds_m[0:1]) + '\t velocity magnitude:   ' + 
+                str(vel_magnitude) + '\t KE:   ' + str(ke))
+
+        plotLine(redshifts, kes, 'Galaxy: ' + dataset + ' - Total Kinetic Energy vs. Redshift', 'redshift', 'KE ($M_{\odot}km^2s^{-2}$)')
+        plotLine(redshifts, kes * 1.989e30 / 1000, 'Galaxy: ' + dataset + ' - Total Kinetic Energy vs. Redshift', 'redshift', 'KE (J)')
+        plotLine(redshifts, kes * 1.989e30 / 1000 * 1e7, 'Galaxy: ' + dataset + ' - Total Kinetic Energy vs. Redshift', 'redshift', 'KE (erg)')
+
+        plotLine(redshifts, specificKes, 'Galaxy: ' + dataset + ' - Total Specific Kinetic Energy vs. Redshift', 'redshift', 'KE ($M_{\odot}km^2s^{-2}$)')
+        plotLine(redshifts, specificKes * 1.989e30 / 1000, 'Galaxy: ' + dataset + ' - Total Specific Kinetic Energy vs. Redshift', 'redshift', 'KE (J)')
+        plotLine(redshifts, specificKes * 1.989e30 / 1000 * 1e7, 'Galaxy: ' + dataset + ' - Total Specific Kinetic Energy vs. Redshift', 'redshift', 'KE (erg)')
 
 if __name__ == "__main__":
     print ("\n\n")

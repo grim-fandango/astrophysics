@@ -49,13 +49,6 @@ def main():
         specificKes = np.array(range(24), dtype=float)
         
         for file in files:
-        #if 1==1:
-
-
-            #file = 'star_particles_005_z007p050.hdf5'
-            #file = 'star_particles_015_z002p012.hdf5'
-            #file = 'star_particles_028_z000p000.hdf5'
-            #file = 'star_particles_014_z002p237.hdf5'
             
             # get redshift from the filename
             m = re.search('(z[0-9])\w+', file)
@@ -71,24 +64,18 @@ def main():
             ds_v = f['Velocity']
             ds_m = f['Mass']
 
-            # Calculate kinetic energy for all star particles
-            #vel_tot = np.sum(ds_v, axis=1)
-            vel = np.array(ds_v)
-
+            # Get magnitudes of the vectors
             vel_magnitude = np.linalg.norm(ds_v, axis=1)
-            print ('vel_magnitude: ', vel_magnitude)
 
-
+            # Calculate kinetic energy for all star particles
             ke = np.sum(0.5 * np.array(ds_m) * np.square(vel_magnitude))
             specificKe = np.sum(0.5 * np.square(vel_magnitude))
-
 
             redshifts[count] = redshift
             kes[count] = ke
             specificKes[count] = specificKe
-            #keErg[count] = keJoules[count] * 1e7
-            #kes[count] = np.sum((0.5)*(np.array(ds_m))*((vel_magnitude)**2))
 
+            # Next redshift value
             count = count + 1
 
             print('file name:   '+ file   +  '\t redshift:   ' + str(redshift) + '\t mass:   ' + str(ds_m[0:1]) + '\t velocity magnitude:   ' + 

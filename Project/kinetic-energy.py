@@ -85,9 +85,9 @@ def main():
         plotLine(redshifts, kes * 1.989e30 / 1000, 'Galaxy: ' + dataset + ' - Total Kinetic Energy vs. Redshift', 'redshift', 'KE (J)')
         plotLine(redshifts, kes * 1.989e30 / 1000 * 1e7, 'Galaxy: ' + dataset + ' - Total Kinetic Energy vs. Redshift', 'redshift', 'KE (erg)')
 
-        plotLine(redshifts, specificKes, 'Galaxy: ' + dataset + ' - Total Specific Kinetic Energy vs. Redshift', 'redshift', 'KE ($M_{\odot}km^2s^{-2}$)')
-        plotLine(redshifts, specificKes * 1.989e30 / 1000, 'Galaxy: ' + dataset + ' - Total Specific Kinetic Energy vs. Redshift', 'redshift', 'KE (J)')
-        plotLine(redshifts, specificKes * 1.989e30 / 1000 * 1e7, 'Galaxy: ' + dataset + ' - Total Specific Kinetic Energy vs. Redshift', 'redshift', 'KE (erg)')
+        plotLine(redshifts, specificKes, 'Galaxy: ' + dataset + ' - Total Specific Kinetic Energy vs. Redshift', 'redshift', 'Specific KE ($km^2s^{-2}$)')
+        plotLine(redshifts, specificKes * 1.989e30 / 1000, 'Galaxy: ' + dataset + ' - Total Specific Kinetic Energy vs. Redshift', 'redshift', 'Specific KE ($J.kg^{-1}$)')
+        plotLine(redshifts, specificKes * 1.989e30 / 1000 * 1e7, 'Galaxy: ' + dataset + ' - Total Specific Kinetic Energy vs. Redshift', 'redshift', 'Specific KE ($erg.g^{-1}$)')
 
 if __name__ == "__main__":
     print ("\n\n")

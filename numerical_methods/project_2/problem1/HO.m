@@ -1,4 +1,4 @@
-clear; clf
+clear; clf;
 h = 0.2;        % time-step
 t = 0;          % initial time
 tf= 20;         % final time
@@ -32,6 +32,8 @@ hold on
 plot(time,R(1,:),'r*')
 hold on
 plot(time,cos(time),'g')
+legend({'Euler method', '4th order Runge-Kutta method', 'Analytical solution'},
+'Location', 'northwest');
 
 xlabel('t','FontSize',20)
 ylabel('x','FontSize',20)
@@ -43,6 +45,7 @@ hold on
 plot(R(1,:),Vr(1,:),'r*')
 hold on
 plot(A(1,:),Va(1,:),'g')
+legend('Euler method', '4th order Runge-Kutta method', 'Analytical solution');
 
 xlabel('x','FontSize',20)
 ylabel('v','FontSize',20)

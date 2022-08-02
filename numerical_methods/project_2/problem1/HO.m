@@ -18,7 +18,7 @@ for j=1:N+1
      Vr(:,j) = Xr(2)
      
      A(:,j) = cos(t); % exact solution is cos
-     Va(:,j) = sin(t); % d(cos t)/dt i.e. velocity = sin(t)
+     Va(:,j) = -sin(t); % d(cos t)/dt i.e. velocity = sin(t)
      
      Xe = Eul(h,t,Xe);
      Xr = RK4(h,t,Xr);
@@ -26,28 +26,29 @@ for j=1:N+1
      t  = t+h;
 end
 
-figure(1)
-plot(time,E(1,:),'b')
-hold on
-plot(time,R(1,:),'r*')
-hold on
-plot(time,cos(time),'g')
+figure(1);
+plot(time,E(1,:),'b');
+hold on;
+plot(time,R(1,:),'r*');
+hold on;
+plot(time,cos(time),'g');
 legend({'Euler method', '4th order Runge-Kutta method', 'Analytical solution'},
 'Location', 'northwest');
 
-xlabel('t','FontSize',20)
-ylabel('x','FontSize',20)
-set(gca, 'Fontsize', 15)
+xlabel('t','FontSize',20);
+ylabel('x','FontSize',20);
+set(gca, 'Fontsize', 15);
+hold off;
 
-figure(2)
-plot(E(1,:),Ve(1,:),'b')
-hold on
-plot(R(1,:),Vr(1,:),'r*')
-hold on
-plot(A(1,:),Va(1,:),'g')
+figure(2);
+plot(E(1,:),Ve(1,:),'b');
+hold on;
+plot(R(1,:),Vr(1,:),'r*');
+hold on;
+plot(A(1,:),Va(1,:),'g');
 legend('Euler method', '4th order Runge-Kutta method', 'Analytical solution');
 
-xlabel('x','FontSize',20)
-ylabel('v','FontSize',20)
-set(gca, 'Fontsize', 15)
+xlabel('x','FontSize',20);
+ylabel('v','FontSize',20);
+set(gca, 'Fontsize', 15);
 
